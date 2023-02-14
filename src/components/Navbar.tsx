@@ -5,7 +5,7 @@ import AuthContext from '../context/AuthContext';
   const {isLoggedIn}=useContext(AuthContext)
   return (
     <nav>
-        <NavLink to="/about">About</NavLink>
+       {isLoggedIn&& <NavLink to="/about">About</NavLink>}
         <NavLink to="/">Home</NavLink>
         {!isLoggedIn &&<NavLink to="/register">Register</NavLink>}
         {!isLoggedIn &&<NavLink to="/login">Login</NavLink>}
