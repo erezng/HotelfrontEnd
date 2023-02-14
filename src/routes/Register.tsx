@@ -1,13 +1,16 @@
 import { useContext, useState } from "react"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import * as Yup from "yup"
 import { RegisterFormType } from "../@types"
 import { Form,Formik } from "formik"
 import { Field } from "formik/dist/Field"
 import { ErrorMessage } from "formik/dist/ErrorMessage"
+import authService from "../services/Auth.service"
+import { ColorRing } from "react-loader-spinner"
 const Register = () => {
-
+  const nav=useNavigate()
+  const [errMessage, setErrMessage] = useState<string|undefined>(undefined)
   const formlabel="form-label"
   const formcontrol="form-control"
   const usernamestr="username"
@@ -36,7 +39,19 @@ const Register = () => {
 
   const handleRegister=(formValues:RegisterFormType)=>{
     setIsLoading(true);
-    setTimeout(()=>{
+    const {username,email,password}=formValues;
+    authService
+    .register(username,email,password)
+    .then((res)=>{
+      console.log(res.data);
+      nav("/login")
+    })
+    .catch((e)=>{
+      console.log(e);
+      alert(e);
+      setErrMessage(JSON.stringify(e.response.data))
+    })
+    .finally(()=>{
       setIsLoading(false)
     })
     
@@ -47,6 +62,20 @@ const Register = () => {
   }
   return (
     <div>
+      {errMessage && <div>${errMessage}</div>}
+      {isLoading && (
+        <div className="mx-auto w-25">
+          <ColorRing
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="blocks-loading"
+            wrapperStyle={{ margin: "0 auto" }}
+            wrapperClass="blocks-wrapper"
+            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+          />
+        </div>
+      )}      
       <Formik
       initialValues={initialValues}
       onSubmit={handleRegister}
