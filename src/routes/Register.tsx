@@ -35,7 +35,11 @@ const Register = () => {
   })
 
   const handleRegister=(formValues:RegisterFormType)=>{
-    alert(JSON.stringify(formValues))
+    setIsLoading(true);
+    setTimeout(()=>{
+      setIsLoading(false)
+    })
+    
   }
 
   if(isLoggedIn){
@@ -98,7 +102,7 @@ const Register = () => {
             />
           </div>
           <div className="col-12">
-            <button className="btn btn-primary" type="submit">
+            <button disabled={isLoading} className="btn btn-primary" type="submit">
               Register
             </button>
           </div>
