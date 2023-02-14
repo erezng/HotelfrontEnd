@@ -1,4 +1,4 @@
-import { createContext,useState } from 'react';
+import { createContext,useEffect,useState } from 'react';
 import { AuthContextType, ChildProps } from '../@types'
 
   const initialState:AuthContextType={
@@ -10,6 +10,16 @@ import { AuthContextType, ChildProps } from '../@types'
   const AuthContext=createContext<AuthContextType>(initialState);
 
   const AuthContextProvider=({children}:ChildProps)=>{
+    useEffect(() => {
+      const userData=localStorage.getItem("user");
+      if(userData){
+        const user=JSON.parse(userData);
+        const token=user.token;
+        const email=user.email;
+        const username=user.username;
+        login(username,email,token)
+      }
+    }, [])
     
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState<string|undefined>(undefined);
