@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext';
+import "bootstrap/dist/css/bootstrap.css";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
