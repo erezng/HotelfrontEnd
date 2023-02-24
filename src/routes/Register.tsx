@@ -16,6 +16,7 @@ const Register = () => {
   const usernamestr="username"
   const emailstr="email"
   const passwordstr="password"
+  const renter="renter"
   const fieldsize="w-50 mx-auto"
   const alertdanger="alert alert-danger"
   const text="text"
@@ -29,17 +30,20 @@ const Register = () => {
     username:"",
     email:"",
     password:"",
+    renter:"",
   }
   
   const validationSchema=Yup.object({
     username:Yup.string().min(3,"Name too short").required(),
     email:Yup.string().email("Must be a valid email").required(),
-    passwrod:Yup.string().min(8,"Password too short").required()
+    passwrod:Yup.string().min(8,"Password too short").required(),
+    renter:Yup.string().min(8,"Password too short").required()
   })
 
   const handleRegister=(formValues:RegisterFormType)=>{
     setIsLoading(true);
-    const {username,email,password}=formValues;
+    const {username,email,password,renter}=formValues;
+    if(password===renter){     
     authService
     .register(username,email,password)
     .then((res)=>{
@@ -54,7 +58,8 @@ const Register = () => {
     .finally(()=>{
       setIsLoading(false)
     })
-    
+  }
+  else alert("password not match!")
   }
 
   if(isLoggedIn){
@@ -126,6 +131,22 @@ const Register = () => {
             />
             <ErrorMessage 
             name={passwordstr}
+            component={div}
+            className={alertdanger}
+            />
+          </div>
+          <div>
+            <label htmlFor={renter} className={formlabel}>
+              renter
+            </label>
+            <Field 
+            name={renter}
+            type={text}
+            className={formcontrol}
+            id={renter}
+            />
+            <ErrorMessage 
+            name={renter}
             component={div}
             className={alertdanger}
             />
